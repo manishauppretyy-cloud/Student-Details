@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Student Details</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #eef2f7;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: #1e293b;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #64748b;
+            margin-bottom: 30px;
+        }
+
+        /* Form */
+        .form-box {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            margin-bottom: 35px;
+        }
+
+        .input-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            color: #334155;
+            margin-bottom: 7px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 7px;
+            font-size: 15px;
+            outline: none;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: #2563eb;
+        }
+
+        button {
+            width: 100%;
+            padding: 13px;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 7px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+
+        #message {
+            text-align: center;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        /* Student Cards */
+        h2 {
+            color: #1e293b;
+            margin-bottom: 20px;
+        }
+
+        .student-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .student-card {
+            background: white;
+            padding: 22px;
+            border-radius: 12px;
+            border-left: 5px solid #2563eb;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .student-card h3 {
+            color: #2563eb;
+            margin-bottom: 15px;
+            font-size: 21px;
+        }
+
+        .student-card p {
+            color: #475569;
+            margin: 10px 0;
+        }
+
+        .student-card strong {
+            color: #1e293b;
+        }
+
+        .course {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 6px 12px;
+            background: #dbeafe;
+            color: #1d4ed8;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>Student Details</h1>
+
+        <p class="subtitle">
+            Enter details of up to 5 students
+        </p>
+
+        <!-- Student Form -->
+        <div class="form-box">
+
+            <div class="input-group">
+                <label>Student Name</label>
+                <input
+                    type="text"
+                    id="studentName"
+                    placeholder="Enter student name"
+                >
+            </div>
+
+            <div class="input-group">
+                <label>Roll Number</label>
+                <input
+                    type="text"
+                    id="rollNumber"
+                    placeholder="Enter roll number"
+                >
+            </div>
+
+            <div class="input-group">
+                <label>Email</label>
+                <input
+                    type="email"
+                    id="email"
+                    placeholder="Enter email"
+                >
+            </div>
+
+            <div class="input-group">
+                <label>Course</label>
+
+                <select id="course">
+                    <option value="">Select Course</option>
+                    <option value="BCA">BCA</option>
+                    <option value="BBA">BBA</option>
+                    <option value="MCA">MCA</option>
+                    <option value="MBA">MBA</option>
+                </select>
+            </div>
+
+            <button onclick="addStudent()">
+                Add Student
+            </button>
+
+            <p id="message"></p>
+
+        </div>
+
+
+        <!-- Student List -->
+        <h2>Student List</h2>
+
+        <div id="studentContainer" class="student-container">
+        </div>
+
+    </div>
+
+
+    <script>
+
+        // Array to store student details
+        let students = [];
+
+
+        // Function to add a student
+        function addStudent() {
+
+            // Allow maximum 5 students
+            if (students.length >= 5) {
+
+                document.getElementById("message").innerText =
+                    "You can add only 5 students.";
+
+                document.getElementById("message").style.color = "red";
+
+                return;
+            }
+
+
+            // Get values from input fields
+            let name =
+                document.getElementById("studentName").value;
+
+            let roll =
+                document.getElementById("rollNumber").value;
+
+            let email =
+                document.getElementById("email").value;
+
+            let course =
+                document.getElementById("course").value;
+
+
+            // Check empty fields
+            if (
+                name === "" ||
+                roll === "" ||
+                email === "" ||
+                course === ""
+            ) {
+
+                document.getElementById("message").innerText =
+                    "Please fill all the fields.";
+
+                document.getElementById("message").style.color = "red";
+
+                return;
+            }
+
+
+            // Create student object
+            let student = {
+
+                name: name,
+
+                roll: roll,
+
+                email: email,
+
+                course: course
+            };
+
+
+            // Store student in array
+            students.push(student);
+
+
+            // Display students
+            displayStudents();
+
+
+            // Clear input fields
+            document.getElementById("studentName").value = "";
+
+            document.getElementById("rollNumber").value = "";
+
+            document.getElementById("email").value = "";
+
+            document.getElementById("course").value = "";
+
+
+            // Success message
+            document.getElementById("message").innerText =
+                "Student added successfully!";
+
+            document.getElementById("message").style.color = "green";
+        }
+
+
+        // Function to display students
+        function displayStudents() {
+
+            let container =
+                document.getElementById("studentContainer");
+
+
+            // Clear old cards
+            container.innerHTML = "";
+
+
+            // Loop through student array
+            students.forEach(function(student, index) {
+
+                container.innerHTML += `
+
+                    <div class="student-card">
+
+                        <h3>
+                            Student ${index + 1}
+                        </h3>
+
+                        <p>
+                            <strong>Name:</strong>
+                            ${student.name}
+                        </p>
+
+                        <p>
+                            <strong>Roll Number:</strong>
+                            ${student.roll}
+                        </p>
+
+                        <p>
+                            <strong>Email:</strong>
+                            ${student.email}
+                        </p>
+
+                        <span class="course">
+                            ${student.course}
+                        </span>
+
+                    </div>
+
+                `;
+            });
+        }
+
+    </script>
+
+</body>
+</html>
